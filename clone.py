@@ -1,4 +1,6 @@
-import urllib.request as urllib2
+#import urllib.request as urllib2
+
+import urllib
 import re
 from bs4 import BeautifulSoup
 import os
@@ -18,10 +20,12 @@ def create_dir(name):
         os.mkdir(name)
 
 def pull_html(url):
-    req = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    #req = urllib.urlopen(url, headers={'User-Agent': 'Mozilla/5.0'})
+	response = None
+	req = urllib.urlopen(url) 
     try:
-        response = urllib2.urlopen(req).read()
-    except urllib2.URLError as e:
+        response = urllib.req.read()
+    except Exception as e:
         print(e)
         print(url)
     content = response.decode('utf-8')
