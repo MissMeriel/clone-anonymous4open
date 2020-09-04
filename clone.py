@@ -1,6 +1,4 @@
-#import urllib.request as urllib2
-
-import urllib
+import urllib.request as urllib2
 import re
 from bs4 import BeautifulSoup
 import os
@@ -20,12 +18,11 @@ def create_dir(name):
         os.mkdir(name)
 
 def pull_html(url):
-    #req = urllib.urlopen(url, headers={'User-Agent': 'Mozilla/5.0'})
-	response = None
-	req = urllib.urlopen(url) 
+    req = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    response = None
     try:
-        response = urllib.req.read()
-    except Exception as e:
+        response = urllib2.urlopen(req).read()
+    except urllib2.URLError as e:
         print(e)
         print(url)
     content = response.decode('utf-8')
@@ -62,7 +59,16 @@ def clone_file(url, download, root_url='https://anonymous.4open.science'):
         blob_soup = pull_html(root_url+href)
         source_code = blob_soup.find('code')
         with open(file_name, 'w') as f:
-            f.write(source_code.get_text())
+            print()
+            print()
+            print()
+            print(root_url+href)
+            #print(blob_soup)
+            try:
+                f.write(source_code.get_text())
+            except:
+                pass
+            #f.write(source_code.get_text())
 
 def clone_dirs(url, folders_url_lis, download, root_url='https://anonymous.4open.science'):
     trees = pull_trees(root_url+url)
